@@ -4,12 +4,12 @@
 #AÑADIR PORCENTAJE POR ESPECIES SI HACE FALTA
 
 
-df <- PCMayores_IFN4
-province <- NULL
-per_species <- F
-per_CD = F
-com_aut = "Catalunya"
-species <- c("Pinus sylvestris", "Pinus uncinata")
+#df <- PCMayores_IFN4
+#province <- NULL
+#per_species <- F
+#per_CD = F
+#com_aut = "Catalunya"
+#species <- c("Pinus sylvestris", "Pinus uncinata")
 
 .get_groups <- function(df, province = NULL, com_aut = NULL, species = NULL,
                    per_CD = FALSE, per_species = FALSE) {
@@ -98,6 +98,6 @@ get_hei <- function(df, province = NULL, com_aut = NULL, species = NULL,
 }
 
 
-get_N(PCMayores_IFN4, com_aut = "Catalunya", per_species = T)
-get_diam(PCMayores_IFN4, com_aut = "Euskadi", per_species = T)
+#get_N(PCMayores_IFN4, com_aut = "Catalunya", per_species = T)
+#get_diam(PCMayores_IFN4, com_aut = "Euskadi", per_species = T)
 
