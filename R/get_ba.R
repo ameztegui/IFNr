@@ -1,7 +1,7 @@
 
-get_ba/get_N/get_d/get_H
+#get_ba/get_N/get_d/get_H
 
-AÑADIR PORCENTAJE POR ESPECIES SI HACE FALTA
+#AÑADIR PORCENTAJE POR ESPECIES SI HACE FALTA
 
 
 df <- PCMayores_IFN4
