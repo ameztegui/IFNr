@@ -1,3 +1,3 @@
-plot_ba
+# plot_ba
 
-usar get_ba y plotea la variabilidad como violin plot. Pensar bien
+# usar get_ba y plotea la variabilidad como violin plot. Pensar bien

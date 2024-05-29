@@ -3,8 +3,8 @@ get_dominant_sps <- function(df, species, criterion, threshold,
 
 
 
-devuelve las parcelas donde species cumple criterion >= threshold
-    deberia permitir filtrar por provincia o CCAA
+#devuelve las parcelas donde species cumple criterion >= threshold
+ #   deberia permitir filtrar por provincia o CCAA
 }
 
 
