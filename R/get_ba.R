@@ -1,3 +1,8 @@
+
+devtools::install("C:/Users/Usuari/OneDrive - udl.cat/Software/IFNr_0.1.0.tar.gz")
+library(IFNr)
+
+
 load("./data/IFN3_Spain.Rdata")
 load("./data/IFN3_Exs_Spain.Rdata")
 
