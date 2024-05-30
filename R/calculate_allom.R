@@ -1,4 +1,4 @@
-#' Calculate tree biomass or volume over bark based on data from tree inventories and allometries from AllometrApp
+#' @title Calculate tree biomass or volume over bark based on data from tree inventories and allometries from AllometrApp
 #'
 #' @param df The dataframe that contains the data
 #' @param variable The dependent variable that we want to calculate. "BAT" stands for aerial biomass, and "VOB" for volume over bark
@@ -13,15 +13,15 @@
 #' * If `frac = TRUE`, it will return a data frame identical to `df` but with some extra columns containing the biomass weights per tree fraction
 #'
 #' @examples
-#' trees <- data.frame(species = c("Abies alba", "Pinus sylvestris", "Pinus sylvestris", "Pinus pinea", "Quercus ilex"),
-#'                     dbh = 12, 15, 26, 52, 10,
-#'                     height = 10, 12, 20, 24, 9)
-#' calculate_allom(trees, "BAT", equation = "INIA", dbh = "dbh", height = "height", sps = "species")  # including height
-#' calculate_allom(trees, "BAT", equation = "INIA", dbh = "dbh", sps = "species")  # without height
-#' calculate_allom(trees, "BAT", equation = "INIA", dbh = "dbh", sps = "species", frac = T)  # biomass per fractions
+#' data(inventory)
+#' calculate_allom(inventory, "BAT", equation = "INIA", dbh = "Dn", height = "Ht", sps = "Sps_name")  # including height
+#' calculate_allom(inventory, "BAT", equation = "IEFC_2", dbh = "Dn", sps = "Sps_name")  # without height
+#' calculate_allom(inventory, "BAT", equation = "RUIZ", dbh = "Dn", sps = "Sps_name", frac = T)  # biomass per fractions
+#'
+#' @export
 #'
 #'
-#'
+
 calculate_allom <- function (df, variable, equation = NULL, dbh = "dbh", height = NULL, sps, frac = FALSE) {
 
   `%nin%` = Negate(`%in%`)

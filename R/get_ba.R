@@ -1,13 +1,9 @@
 
-devtools::install("C:/Users/Usuari/OneDrive - udl.cat/Software/IFNr_0.1.0.tar.gz")
-library(IFNr)
-
-
-load("./data/IFN3_Spain.Rdata")
-load("./data/IFN3_Exs_Spain.Rdata")
-
-load("./data/IFN4_Spain.Rdata")
-load("./data/IFN4_Exs_Spain.Rdata")
+# load("./data/IFN3_Spain.Rdata")
+# load("./data/IFN3_Exs_Spain.Rdata")
+#
+# load("./data/IFN4_Spain.Rdata")
+# load("./data/IFN4_Exs_Spain.Rdata")
 
 # df = PCMayores_IFN4
 # IFN = "IFN4"
@@ -141,24 +137,24 @@ get_hei <- function(IFN, df, province = NULL, com_aut = NULL, species = NULL,
 
 #' @examples
 #'
+#' #'
 #'
+#' foo <- get_BA(IFN = "IFN3", df = PCMayores_IFN3, per_species = F )
+#' foo2 <- get_BA(IFN = "IFN3", Mayores_exs_IFN3, per_species = F)
+#'
+#' foo3 <- foo |> left_join(foo2,
+#'                          by =c("Provincia", "Prov_Name",
+#'                                "CCAA", "Estadillo", "Codigo",
+#'                                "Clase", "Subclase", "Tipo_Parc")) |>
+#'   mutate(dif = BA.x - BA.y)
+#'
+#' plot(foo3$BA.x, foo3$BA.y)
+#' abline(0,1)
 
-foo <- get_BA(IFN = "IFN3", df = PCMayores_IFN3, per_species = F )
-foo2 <- get_BA(IFN = "IFN3", Mayores_exs_IFN3, per_species = F)
-
-foo3 <- foo |> left_join(foo2,
-                         by =c("Provincia", "Prov_Name",
-                               "CCAA", "Estadillo", "Codigo",
-                               "Clase", "Subclase", "Tipo_Parc")) |>
-  mutate(dif = BA.x - BA.y)
-
-plot(foo3$BA.x, foo3$BA.y)
-abline(0,1)
-
-
-get_diam(PCMayores_IFN4, com_aut = "Euskadi", per_species = TRUE)
-
-
-get_BA(PCMayores_IFN4, species = "Pinus sylvestris")
-
-get_N(PCMayores_IFN4, com_aut = "Cataluñña", per_species = FALSE)
+#
+# get_diam(PCMayores_IFN4, com_aut = "Euskadi", per_species = TRUE)
+#
+#
+# get_BA(PCMayores_IFN4, species = "Pinus sylvestris")
+#
+# get_N(PCMayores_IFN4, com_aut = "Cataluñña", per_species = FALSE)
