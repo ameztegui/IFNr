@@ -1,0 +1,12 @@
+To reference `IFNr` in publications, please cite the following:
+
+Aitor Ameztegui (2024) IFNr: An R package  to process and visualize data from the Spanish National Forest Inventory (IFN). GitHub repository, https://github.com/ameztegui/IFNr
+
+@misc{Ameztegui2024,
+  author = {Ameztegui, A.},
+  title = {IFNr},
+  year = {2024},
+  publisher = {GitHub},
+  journal = {GitHub repository},
+  howpublished = {\url{https://github.com/ameztegui/IFNr}}
+}
