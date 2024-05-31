@@ -23,9 +23,9 @@ get_BA(
 
 \item{species}{vector of characters containing the name of the tree species to be included in the analyses}
 
-\item{per_CD}{optional. When `per_CD = TRUE`, the desired variable is summarized per plot and diameter class}
+\item{per_CD}{optional. When \code{per_CD = TRUE}, the desired variable is summarized per plot and diameter class}
 
-\item{per_species}{optional. When `per_species = TRUE`, the desired variable is summarized per plot and species}
+\item{per_species}{optional. When \code{per_species = TRUE}, the desired variable is summarized per plot and species}
 }
 \value{
 A data frame containing the level of aggregation specified (per plot, per plot & species, per plot and DC, per plot, species and DC), and the amount of the outùt variable specified

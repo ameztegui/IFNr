@@ -18,6 +18,9 @@
 #' calculate_allom(inventory, "BAT", equation = "IEFC_2", dbh = "Dn", sps = "Sps_name")  # without height
 #' calculate_allom(inventory, "BAT", equation = "RUIZ", dbh = "Dn", sps = "Sps_name", frac = T)  # biomass per fractions
 #'
+#'@import tidyr
+#'@import rlang
+#'
 #' @export
 #'
 #'

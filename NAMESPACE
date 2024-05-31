@@ -2,3 +2,7 @@
 
 export(calculate_allom)
 export(get_BA)
+import(rlang)
+import(tidyr)
+importFrom(glue,glue)
+importFrom(lifecycle,deprecated)
