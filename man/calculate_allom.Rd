@@ -23,15 +23,17 @@ calculate_allom(
 
 \item{dbh}{The name of the variable that identifies diameter in the dataset}
 
-\item{height}{The name of the variable that identifies tree height in the dataset. If `height` is missing, the funcion will calculate it from allometries and warn about it.}
+\item{height}{The name of the variable that identifies tree height in the dataset. If \code{height} is missing, the funcion will calculate it from allometries and warn about it.}
 
 \item{sps}{A variable containing the names of the species}
 
-\item{frac}{Whether we want to obtain the biomass values by tree fraction (leaves, small and large branches, stem, bark). By default, `frac = FALSE`}
+\item{frac}{Whether we want to obtain the biomass values by tree fraction (leaves, small and large branches, stem, bark). By default, \code{frac = FALSE}}
 }
 \value{
-* If `frac = FALSE`, it will return a numeric vector containing the BAT or VOB values for each observation in `df`.
-* If `frac = TRUE`, it will return a data frame identical to `df` but with some extra columns containing the biomass weights per tree fraction
+\itemize{
+\item If \code{frac = FALSE}, it will return a numeric vector containing the BAT or VOB values for each observation in \code{df}.
+\item If \code{frac = TRUE}, it will return a data frame identical to \code{df} but with some extra columns containing the biomass weights per tree fraction
+}
 }
 \description{
 Calculate tree biomass or volume over bark based on data from tree inventories and allometries from AllometrApp
