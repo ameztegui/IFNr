@@ -60,23 +60,23 @@ library(dplyr)
     if(isTRUE(per_species) & isTRUE(per_CD)) {
         df |>
             group_by(Provincia, Prov_Name, CCAA,
-                     Estadillo, Codigo,Clase, Subclase, Tipo_Parc,
+                     Estadillo, Codigo, Tipo_Parc,
                      Especie, Sps_name, CD)
     } else if (isTRUE(per_species)) {
         df |>
             group_by(Provincia, Prov_Name, CCAA,
-                     Estadillo, Codigo,Clase, Subclase, Tipo_Parc,
+                     Estadillo, Codigo,Tipo_Parc,
                      Especie, Sps_name)
 
     } else if (isTRUE(per_CD)) {
         df |>
             group_by(Provincia, Prov_Name, CCAA,
-                     Estadillo, Codigo,Clase, Subclase, Tipo_Parc,
+                     Estadillo, Codigo, Tipo_Parc,
                      CD)
     } else {
         df |>
             group_by(Provincia, Prov_Name, CCAA,
-                     Estadillo, Codigo,Clase, Subclase, Tipo_Parc)
+                     Estadillo, Codigo,Tipo_Parc)
     }
 
 }
