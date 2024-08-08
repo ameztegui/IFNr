@@ -36,7 +36,7 @@ library(dplyr)
     df <- df |>
       mutate(CD = as.numeric(as.character(
         cut(Dn, breaks = c(seq(7.5, 67.5, 5), Inf),
-            labels = seq(10,70,5)))),
+            labels = seq(10,70,5), include.lowest = T))),
         BA = pi*(Dn/100)^2*N/4)
 
       if(!is.null(com_aut)) {
