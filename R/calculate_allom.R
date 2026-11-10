@@ -48,9 +48,9 @@ calculate_allom <- function (df, variable, equation = NULL, dbh = "dbh", height 
 
     warning("No height data was found in your data frame. If the allometric equation you chose requires height values,
                               we will use the allometries by IEFC")
-    df$Height <- df %>%
-      left_join( filter(data_allom, dependent_var == "Ht"), by = by) %>%
-      mutate(Ht = param_a * dbh ^ param_b) %>% pull(Ht)
+    df$Height <- df |>
+      left_join( filter(data_allom, dependent_var == "Ht"), by = by) |>
+      mutate(Ht = param_a * dbh ^ param_b) |> pull(Ht)
 
   } else {
     df$Height <- pull(df[,height])
@@ -60,15 +60,15 @@ calculate_allom <- function (df, variable, equation = NULL, dbh = "dbh", height 
   if(variable == "VOB") {
     eq_id = "VOB_IEFC_1"
 
-    foo <- data_allom %>%
+    foo <- data_allom |>
       filter(dependent_var == variable,
-             eq_id == !!eq_id) %>%
+             eq_id == !!eq_id) |>
       dplyr::select(species, param_a:param_d, BEFD)
 
-    output <- left_join(df,foo, by = by) %>%
+    output <- left_join(df,foo, by = by) |>
       mutate(VOB = param_a*dbh^param_b)
 
-    output %>%
+    output |>
       pull(VOB)
 
   } else {
@@ -79,15 +79,15 @@ calculate_allom <- function (df, variable, equation = NULL, dbh = "dbh", height 
     if(equation == "VOB") {
       eq_id = "VOB_IEFC_1"
 
-      foo <- data_allom %>%
+      foo <- data_allom |>
         filter(dependent_var == "VOB",
-               eq_id == !!eq_id) %>%
+               eq_id == !!eq_id) |>
         dplyr::select(species, param_a:param_d, BEFD)
 
-      output <- left_join(df,foo, by = by) %>%
+      output <- left_join(df,foo, by = by) |>
         mutate(VOB = param_a * dbh ^ param_b,
                BAT = VOB * BEFD)
-      output%>%
+      output|>
         pull(BAT)
     } else {
 
@@ -95,19 +95,22 @@ calculate_allom <- function (df, variable, equation = NULL, dbh = "dbh", height 
         eq_id = c("BF_RUIZ_1", "BR7_RUIZ_1", "BR2_7_RUIZ_1", "BR2_RUIZ_1")
         df$Species <- pull(df[,sps])
 
-        foo <- data_allom %>%
-          filter(eq_id %in% !!eq_id) %>%
+        foo <- data_allom |>
+          filter(eq_id %in% !!eq_id) |>
           pivot_wider(id_cols = species,
                       names_from = eq_id,
                       values_from =  param_a:param_d,
                       names_glue = "{eq_id}_{.value}")
 
-        output <- left_join(df,foo, by = by) %>%
+        output <- left_join(df, foo, by = by) |>
           mutate(
+            ## Trunk biomass
             BF_RUIZ = case_when(
               Species == "Fagus sylvatica" ~
                 BF_RUIZ_1_param_a * dbh^2 + BF_RUIZ_1_param_b * dbh^2 * Height,
               TRUE ~ (BF_RUIZ_1_param_a * dbh ^ BF_RUIZ_1_param_b) * (Height ^ BF_RUIZ_1_param_c) + BF_RUIZ_1_param_d * Height),
+
+            ## Branches > 7 cm
             BR7_RUIZ = case_when(
               Species %in% c("Alnus glutinosa", "Quercus canariensis", "Quercus faginea", "Quercus suber",
                              "Abies alba", "Pinus pinaster","Pinus uncinata") ~
@@ -119,6 +122,8 @@ calculate_allom <- function (df, variable, equation = NULL, dbh = "dbh", height 
                               "Abies alba", "Pinus pinaster","Pinus uncinata") & dbh > BR7_RUIZ_1_param_b ~
                 BR7_RUIZ_1_param_a * (dbh - BR7_RUIZ_1_param_b)^BR7_RUIZ_1_param_c +
                 BR7_RUIZ_1_param_d*(dbh - BR7_RUIZ_1_param_b)^2*Height),
+
+            ## Branches 2-7 cm
             BR2_7_RUIZ = case_when(
               Species == "Pinus halepensis" ~
                 BR2_7_RUIZ_1_param_a + BR2_7_RUIZ_1_param_b * dbh^2*Height + BR2_7_RUIZ_1_param_c*dbh*Height,
@@ -126,6 +131,8 @@ calculate_allom <- function (df, variable, equation = NULL, dbh = "dbh", height 
                 BR2_7_RUIZ_1_param_a * dbh^BR2_7_RUIZ_1_param_b + BR2_7_RUIZ_1_param_c * Height +
                 BR2_7_RUIZ_1_param_d * dbh^2 * Height,
               TRUE ~ BR2_7_RUIZ_1_param_a * dbh ^ BR2_7_RUIZ_1_param_b * Height ^ BR2_7_RUIZ_1_param_c),
+
+            ## Branches < 2 cm
             BR2_RUIZ = case_when(
               Species %in% c("Pinus pinea", "Pinus uncinata") ~
                 BR2_RUIZ_1_param_a + BR2_RUIZ_1_param_b * dbh ^ BR2_RUIZ_1_param_c - BR2_RUIZ_1_param_d * Height,
@@ -137,15 +144,15 @@ calculate_allom <- function (df, variable, equation = NULL, dbh = "dbh", height 
                              "Pinus sylvestris", "Fraxinus angustifolia") ~
                 BR2_RUIZ_1_param_a * dbh ^ BR2_RUIZ_1_param_b * BR2_RUIZ_1_param_c * Height ^BR2_RUIZ_1_param_d,
               TRUE ~
-                BR2_RUIZ_1_param_a * dbh ^ BR2_RUIZ_1_param_b + BR2_RUIZ_1_param_c * dbh ^BR2_RUIZ_1_param_d * Height)) %>%
-          rowwise() %>%
-          mutate(BAT = sum(BF_RUIZ, BR7_RUIZ, BR2_7_RUIZ, BR2_RUIZ, na.rm = T)) %>%
+                BR2_RUIZ_1_param_a * dbh ^ BR2_RUIZ_1_param_b + BR2_RUIZ_1_param_c * dbh ^BR2_RUIZ_1_param_d * Height)) |> |>
+          rowwise() |>
+          mutate(BAT = sum(BF_RUIZ, BR7_RUIZ, BR2_7_RUIZ, BR2_RUIZ, na.rm = T)) |>
           dplyr::select(-contains("param"))
 
         if(isTRUE(frac)) {
           output
         } else {
-          output %>%
+          output |>
             pull(BAT)
         }
 
@@ -156,28 +163,28 @@ calculate_allom <- function (df, variable, equation = NULL, dbh = "dbh", height 
           eq_id = c("BF_INIA_1", "BH_INIA_1", "BR2_7_INIA_1", "BR2_INIA_1", "BR7_INIA_1", "BAT_INIA_1")
           df$Species <- pull(df[,sps] )
 
-          foo <- data_allom %>%
-            filter(eq_id %in% !!eq_id) %>%
+          foo <- data_allom |>
+            filter(eq_id %in% !!eq_id) |>
             pivot_wider(id_cols = species,
                         names_from = eq_id,
                         values_from =  param_a:param_d,
                         names_glue = "{eq_id}_{.value}")
 
-          output <- left_join(df,foo, by = by) %>%
+          output <- left_join(df,foo, by = by) |>
             mutate(BAT = BAT_INIA_1_param_a * dbh ^ BAT_INIA_1_param_b,
                    BF = BF_INIA_1_param_a * dbh ^ BF_INIA_1_param_b,
                    BH = BH_INIA_1_param_a * dbh ^ BH_INIA_1_param_b,
                    BR2_7 = BR2_7_INIA_1_param_a * dbh ^ BR2_7_INIA_1_param_b,
                    BR2 = BR2_INIA_1_param_a * dbh ^ BR2_INIA_1_param_b,
-                   BR7 = BR7_INIA_1_param_a * dbh ^ BR7_INIA_1_param_b) %>%
-            rowwise() %>%
-            mutate(BAT_fr = sum(BF, BH, BR2_7, BR2, BR7, na.rm = T)) %>%
+                   BR7 = BR7_INIA_1_param_a * dbh ^ BR7_INIA_1_param_b) |>
+            rowwise() |>
+            mutate(BAT_fr = sum(BF, BH, BR2_7, BR2, BR7, na.rm = T)) |>
             dplyr::select(-contains("param"))
           if(isTRUE(frac)) {
             output
 
           } else {
-            output %>%
+            output |>
               pull(BAT)
           }
 
@@ -187,16 +194,16 @@ calculate_allom <- function (df, variable, equation = NULL, dbh = "dbh", height 
           #  } else {
           eq_id = paste0(variable, "_", equation)
 
-          foo <- data_allom %>%
+          foo <- data_allom |>
             filter(dependent_var == variable,
-                   eq_id == !!eq_id) %>%
+                   eq_id == !!eq_id) |>
             dplyr::select(species, param_a:param_d)
 
-          left_join(df,foo, by = by) %>%
+          left_join(df,foo, by = by) |>
             mutate(BAT = case_when(equation == "IEFC_1" ~ param_a * dbh ^ param_b,
                                    equation == "IEFC_2" ~ param_a * dbh ^ param_b * Height ^ param_c,
                                    equation == "INIA" ~ param_a * dbh ^ param_b,
-                                   TRUE ~ NA_real_)) %>%
+                                   TRUE ~ NA_real_)) |>
             pull(BAT)
         }
       }
