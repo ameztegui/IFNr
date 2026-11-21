@@ -29,8 +29,22 @@ calculate_allom <- function (df, variable, equation = NULL, dbh = "dbh", height 
 
   `%nin%` = Negate(`%in%`)
 
-  species <- enquo(sps)
-  by = set_names("species", quo_name(species))
+  species <- rlang::enquo(sps)
+
+  sps_name <- if (rlang::quo_is_symbol(species)) {
+    rlang::quo_name(species)
+  } else {
+    rlang::eval_tidy(species)
+  }
+
+  # Check that species variable exists
+  if (!sps_name %in% names(df)) {
+    stop("Species variable not found in your data frame. Please check parameter `sps`.")
+  }
+
+
+  by <- setNames("species", sps_name)
+
 
   # Check that variables exist
   if(missing(variable)) stop("You must define which variable to calculate.
@@ -39,22 +53,29 @@ calculate_allom <- function (df, variable, equation = NULL, dbh = "dbh", height 
     stop ("You must define one BAT equation. Options are `IEFC_1`, `IEFC_2`, `VOB`, INIA`, or `RUIZ`")
 
 
-  try(df$dbh <- pull(df[,dbh]),
-      stop("No diameter data found in your data frame. Please use parameter `dbh` to specify the variable containing
-                                       tree diameters"))
+  if (!dbh %in% names(df)) {
+    stop("No diameter data found in your data frame. Please use parameter `dbh` to specify the variable containing
+         tree diameters.")
+  }
+  df$dbh <- df[[dbh]]
 
   # If height is not defined, calculate
   if(is.null(height)) {
 
-    warning("No height data was found in your data frame. If the allometric equation you chose requires height values,
-                              we will use the allometries by IEFC")
+    warning("No height data provided.  If the allometric equation you chose requires height values,they
+            will be estimated using IEFC allometries.")
+
     df$Height <- df |>
       left_join( filter(data_allom, dependent_var == "Ht"), by = by) |>
       mutate(Ht = param_a * dbh ^ param_b) |> pull(Ht)
 
-  } else {
-    df$Height <- pull(df[,height])
+    # Calculate height
 
+  } else {
+    if (!height %in% names(df)) {
+      stop("Height variable not found in your data frame. Please check parameter `height`.")
+    }
+    df$Height <- df[[height]]
   }
 
   if(variable == "VOB") {
@@ -93,7 +114,7 @@ calculate_allom <- function (df, variable, equation = NULL, dbh = "dbh", height 
 
       if(equation == "RUIZ") {
         eq_id = c("BF_RUIZ_1", "BR7_RUIZ_1", "BR2_7_RUIZ_1", "BR2_RUIZ_1")
-        df$Species <- pull(df[,sps])
+        df$Species <- df[[sps_name]]
 
         foo <- data_allom |>
           filter(eq_id %in% !!eq_id) |>
@@ -156,9 +177,14 @@ calculate_allom <- function (df, variable, equation = NULL, dbh = "dbh", height 
                              "Pinus sylvestris", "Fraxinus angustifolia") ~
                 BR2_RUIZ_1_param_a * dbh ^ BR2_RUIZ_1_param_b * BR2_RUIZ_1_param_c * Height ^BR2_RUIZ_1_param_d,
               TRUE ~
-                BR2_RUIZ_1_param_a * dbh ^ BR2_RUIZ_1_param_b + BR2_RUIZ_1_param_c * dbh ^BR2_RUIZ_1_param_d * Height)) |>
-          rowwise() |>
-          mutate(BAT = sum(BF_RUIZ, BR7_RUIZ, BR2_7_RUIZ, BR2_RUIZ, na.rm = T)) |>
+                BR2_RUIZ_1_param_a * dbh ^ BR2_RUIZ_1_param_b + BR2_RUIZ_1_param_c * dbh ^BR2_RUIZ_1_param_d * Height))
+
+        if (anyNA(output[, c("BF_RUIZ", "BR7_RUIZ", "BR2_7_RUIZ", "BR2_RUIZ")])) {
+          warning("Some biomass fractions are NA. Total biomass (BAT) has been calculated using the available fractions only.")
+        }
+
+        output <- output |>
+          mutate(BAT = rowSums(cbind(BF_RUIZ, BR7_RUIZ, BR2_7_RUIZ, BR2_RUIZ), na.rm = T))|>
           dplyr::select(-contains("param"))
 
         if(isTRUE(frac)) {
@@ -173,7 +199,7 @@ calculate_allom <- function (df, variable, equation = NULL, dbh = "dbh", height 
       } else{
         if (equation == "INIA") {
           eq_id = c("BF_INIA_1", "BH_INIA_1", "BR2_7_INIA_1", "BR2_INIA_1", "BR7_INIA_1", "BAT_INIA_1")
-          df$Species <- pull(df[,sps] )
+          df$Species <- df[[sps_name]]
 
           foo <- data_allom |>
             filter(eq_id %in% !!eq_id) |>
@@ -188,9 +214,12 @@ calculate_allom <- function (df, variable, equation = NULL, dbh = "dbh", height 
                    BH = BH_INIA_1_param_a * dbh ^ BH_INIA_1_param_b,
                    BR2_7 = BR2_7_INIA_1_param_a * dbh ^ BR2_7_INIA_1_param_b,
                    BR2 = BR2_INIA_1_param_a * dbh ^ BR2_INIA_1_param_b,
-                   BR7 = BR7_INIA_1_param_a * dbh ^ BR7_INIA_1_param_b) |>
-            rowwise() |>
-            mutate(BAT_fr = sum(BF, BH, BR2_7, BR2, BR7, na.rm = T)) |>
+                   BR7 = BR7_INIA_1_param_a * dbh ^ BR7_INIA_1_param_b)
+
+          if (anyNA(output[, c("BF", "BH", "BR2_7", "BR2", "BR7")])) {
+            warning("Some biomass fractions are NA. BAT_fr has been calculated using the available fractions only.")          }
+            output <- output |>
+            mutate(BAT_fr = rowSums(cbind(BF, BH, BR2_7, BR2, BR7), na.rm = T)) |>
             dplyr::select(-contains("param"))
           if(isTRUE(frac)) {
             output
