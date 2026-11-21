@@ -1,6 +1,6 @@
 #' @title Calculate tree biomass or volume over bark based on data from tree inventories and allometries from AllometrApp
 #'
-#' @param df The dataframe that contains the data
+#' @param df The dataframe that contains the inventory data
 #' @param variable The dependent variable that we want to calculate. "BAT" stands for aerial biomass, and "VOB" for volume over bark
 #' @param equation The allometric equation we want to use. Options include "INIA", "IEFC_1", "IEFC_2", "RUIZ", and "VOB"
 #' @param dbh The name of the variable that identifies diameter in the dataset
