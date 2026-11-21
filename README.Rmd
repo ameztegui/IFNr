@@ -171,10 +171,19 @@ See `?calculate_allom` for details on the available equation systems, input requ
 
 ## Citation
 
-If you use **IFNr** in your research, please cite the package with:
+If you use **IFNr** in your research, please cite the package as follows:
 
 ```{r citation, echo=FALSE, results='asis'}
-cat(format(citation("IFNr", auto = TRUE)))
+desc <- utils::packageDescription("IFNr")
+
+cat(
+  paste0(
+    desc$Author, " (", format(Sys.Date(), "%Y"),
+    "). ", desc$Title,
+    ". R package version ", desc$Version,
+    ". https://github.com/ameztegui/IFNr"
+  )
+)
 ```
 
 ## License

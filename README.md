@@ -189,26 +189,12 @@ input requirements and returned variables.
 
 ## Citation
 
-If you use **IFNr** in your research, please cite the package with:
+If you use **IFNr** in your research, please cite the package as
+follows:
 
-    ## Warning in citation("IFNr", auto = TRUE): could not determine year for 'IFNr' from package DESCRIPTION file
-
-To cite package ‘IFNr’ in publications use:
-
-Ameztegui A, de Lleida U (????). *IFNr: A package to process data from
-forest inventories*. R package version 0.5.0,
-<https://github.com/ameztegui/IFNr>.
-
-A BibTeX entry for LaTeX users is
-
-@Manual{, title = {IFNr: A package to process data from forest
-inventories}, author = {Aitor Ameztegui and Universitat {de Lleida}},
-note = {R package version 0.5.0}, url =
-{<https://github.com/ameztegui/IFNr>}, }
-
-ATTENTION: This citation information has been auto-generated from the
-package DESCRIPTION file and may need manual editing, see
-‘help(“citation”)’.
+Aitor Ameztegui, Universitat de Lleida (2026). A package to process data
+from forest inventories. R package version 0.5.0.
+<https://github.com/ameztegui/IFNr>
 
 ## License
 
