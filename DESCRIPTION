@@ -8,7 +8,7 @@ Description: A collection of functions to compute dasometric variables from fore
     inventory data. It allows users to compute basal area per plot and species, get the 
     dominant species in each plot, or calculate biomass, among other utilities. See the documentation 
     for a complete description of the functions available.
-License: MIT
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.3.2
@@ -17,11 +17,10 @@ Depends:
 URL: https://github.com/ameztegui/IFNr
 BugReports: https://github.com/ameztegui/IFNr/issues
 Imports: 
-    cli,
     glue,
     lifecycle,
     rlang,
-    withr,
     tidyr,
-    dplyr
+    dplyr,
+    assertthat
 Roxygen: list(markdown = TRUE)

@@ -48,14 +48,14 @@ is also calculated.
 }
 \examples{
 # Calculate total tree density per plot
-get_N(IFN = "IFN3", df = inventory)
+get_N(IFN = "IFN3", df = IFN4_example)
 
 # Calculate tree density by species
-get_N(IFN = "IFN3", df = inventory,
+get_N(IFN = "IFN3", df = IFN4_example,
       per_species = TRUE)
 
 # Calculate tree density by diameter class
-get_N(IFN = "IFN4", df = inventory,
+get_N(IFN = "IFN4", df = IFN4_example,
       per_CD = TRUE)
 
 }

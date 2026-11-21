@@ -40,8 +40,11 @@ Calculate tree biomass or volume over bark based on data from tree inventories a
 }
 \examples{
 data(inventory)
-calculate_allom(inventory, "BAT", equation = "INIA", dbh = "Dn", height = "Ht", sps = "Sps_name")  # including height
-calculate_allom(inventory, "BAT", equation = "IEFC_2", dbh = "Dn", sps = "Sps_name")  # without height
-calculate_allom(inventory, "BAT", equation = "RUIZ", dbh = "Dn", sps = "Sps_name", frac = T)  # biomass per fractions
+calculate_allom(inventory, "BAT", equation = "INIA",
+dbh = "Dn", height = "Ht", sps = "Sps_name")  # including height
+calculate_allom(inventory, "BAT", equation = "IEFC_2",
+ dbh = "Dn", sps = "Sps_name")  # without height
+calculate_allom(inventory, "BAT", equation = "RUIZ",
+dbh = "Dn", sps = "Sps_name", frac = TRUE)  # biomass per fractions
 
 }

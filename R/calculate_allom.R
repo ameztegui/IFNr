@@ -14,9 +14,12 @@
 #'
 #' @examples
 #' data(inventory)
-#' calculate_allom(inventory, "BAT", equation = "INIA", dbh = "Dn", height = "Ht", sps = "Sps_name")  # including height
-#' calculate_allom(inventory, "BAT", equation = "IEFC_2", dbh = "Dn", sps = "Sps_name")  # without height
-#' calculate_allom(inventory, "BAT", equation = "RUIZ", dbh = "Dn", sps = "Sps_name", frac = T)  # biomass per fractions
+#' calculate_allom(inventory, "BAT", equation = "INIA",
+#' dbh = "Dn", height = "Ht", sps = "Sps_name")  # including height
+#' calculate_allom(inventory, "BAT", equation = "IEFC_2",
+#'  dbh = "Dn", sps = "Sps_name")  # without height
+#' calculate_allom(inventory, "BAT", equation = "RUIZ",
+#' dbh = "Dn", sps = "Sps_name", frac = TRUE)  # biomass per fractions
 #'
 #'@import tidyr
 #'@import rlang
@@ -67,7 +70,7 @@ calculate_allom <- function (df, variable, equation = NULL, dbh = "dbh", height 
 
     df$Height <- df |>
       left_join( filter(data_allom, dependent_var == "Ht"), by = by) |>
-      mutate(Ht = param_a * dbh ^ param_b) |> pull(Ht)
+      dplyr::mutate(Ht = param_a * dbh ^ param_b) |> pull(Ht)
 
     # Calculate height
 
@@ -87,7 +90,7 @@ calculate_allom <- function (df, variable, equation = NULL, dbh = "dbh", height 
       dplyr::select(species, param_a:param_d, BEFD)
 
     output <- left_join(df,foo, by = by) |>
-      mutate(VOB = param_a*dbh^param_b)
+      dplyr::mutate(VOB = param_a*dbh^param_b)
 
     output |>
       pull(VOB)
@@ -106,7 +109,7 @@ calculate_allom <- function (df, variable, equation = NULL, dbh = "dbh", height 
         dplyr::select(species, param_a:param_d, BEFD)
 
       output <- left_join(df,foo, by = by) |>
-        mutate(VOB = param_a * dbh ^ param_b,
+        dplyr::mutate(VOB = param_a * dbh ^ param_b,
                BAT = VOB * BEFD)
       output|>
         pull(BAT)
@@ -124,7 +127,7 @@ calculate_allom <- function (df, variable, equation = NULL, dbh = "dbh", height 
                       names_glue = "{eq_id}_{.value}")
 
         output <- left_join(df, foo, by = by) |>
-          mutate(
+          dplyr::mutate(
             ## Trunk biomass
             BF_RUIZ = case_when(
               Species == "Fagus sylvatica" ~
@@ -184,7 +187,7 @@ calculate_allom <- function (df, variable, equation = NULL, dbh = "dbh", height 
         }
 
         output <- output |>
-          mutate(BAT = rowSums(cbind(BF_RUIZ, BR7_RUIZ, BR2_7_RUIZ, BR2_RUIZ), na.rm = T))|>
+          dplyr::mutate(BAT = rowSums(cbind(BF_RUIZ, BR7_RUIZ, BR2_7_RUIZ, BR2_RUIZ), na.rm = T))|>
           dplyr::select(-contains("param"))
 
         if(isTRUE(frac)) {
@@ -202,14 +205,14 @@ calculate_allom <- function (df, variable, equation = NULL, dbh = "dbh", height 
           df$Species <- df[[sps_name]]
 
           foo <- data_allom |>
-            filter(eq_id %in% !!eq_id) |>
+            dplyr::filter(eq_id %in% !!eq_id) |>
             pivot_wider(id_cols = species,
                         names_from = eq_id,
                         values_from =  param_a:param_d,
                         names_glue = "{eq_id}_{.value}")
 
           output <- left_join(df,foo, by = by) |>
-            mutate(BAT = BAT_INIA_1_param_a * dbh ^ BAT_INIA_1_param_b,
+            dplyr::mutate(BAT = BAT_INIA_1_param_a * dbh ^ BAT_INIA_1_param_b,
                    BF = BF_INIA_1_param_a * dbh ^ BF_INIA_1_param_b,
                    BH = BH_INIA_1_param_a * dbh ^ BH_INIA_1_param_b,
                    BR2_7 = BR2_7_INIA_1_param_a * dbh ^ BR2_7_INIA_1_param_b,
@@ -219,7 +222,7 @@ calculate_allom <- function (df, variable, equation = NULL, dbh = "dbh", height 
           if (anyNA(output[, c("BF", "BH", "BR2_7", "BR2", "BR7")])) {
             warning("Some biomass fractions are NA. BAT_fr has been calculated using the available fractions only.")          }
             output <- output |>
-            mutate(BAT_fr = rowSums(cbind(BF, BH, BR2_7, BR2, BR7), na.rm = T)) |>
+            dplyr::mutate(BAT_fr = rowSums(cbind(BF, BH, BR2_7, BR2, BR7), na.rm = T)) |>
             dplyr::select(-contains("param"))
           if(isTRUE(frac)) {
             output
@@ -241,7 +244,7 @@ calculate_allom <- function (df, variable, equation = NULL, dbh = "dbh", height 
             dplyr::select(species, param_a:param_d)
 
           left_join(df,foo, by = by) |>
-            mutate(BAT = case_when(equation == "IEFC_1" ~ param_a * dbh ^ param_b,
+            dplyr::mutate(BAT = case_when(equation == "IEFC_1" ~ param_a * dbh ^ param_b,
                                    equation == "IEFC_2" ~ param_a * dbh ^ param_b * Height ^ param_c,
                                    equation == "INIA" ~ param_a * dbh ^ param_b,
                                    TRUE ~ NA_real_)) |>

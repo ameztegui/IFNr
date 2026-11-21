@@ -47,10 +47,10 @@ by tree density (N).
 }
 \examples{
 # Calculate mean height per plot
-get_hei(IFN = "IFN3", df = inventory)
+get_hei(IFN = "IFN3", df = IFN3_example)
 
 # Calculate mean height by species
-get_hei(IFN = "IFN4", df = inventory,
+get_hei(IFN = "IFN4", df = IFN4_example,
         per_species = TRUE)
 
 }

@@ -20,7 +20,7 @@ IFN3_example
 \description{
 A subset of tree-level data from the 3rd Spanish National Forest
 Inventory (IFN3), used to demonstrate the functions for calculating
-forest stand attributes.
+forest stand attributes and species dominance.
 }
 \details{
 The dataset contains all tree records from a selection of inventory

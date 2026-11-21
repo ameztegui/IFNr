@@ -1,0 +1,9 @@
+bibentry(
+  bibtype = "Manual",
+  title = "IFNr: Tools for Forest Inventory Data Analysis",
+  author = person("Aitor", "Ameztegui"),
+  year = utils::packageDescription("IFNr")$Year,
+  note = paste("R package version",
+               utils::packageVersion("IFNr")),
+  url = "https://github.com/ameztegui/IFNr"
+)

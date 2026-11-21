@@ -26,7 +26,7 @@
 #'
 #' A subset of tree-level data from the 3rd Spanish National Forest
 #' Inventory (IFN3), used to demonstrate the functions for calculating
-#' forest stand attributes.
+#' forest stand attributes and species dominance.
 #'
 #' The dataset contains all tree records from a selection of inventory
 #' plots in Catalonia.
@@ -47,7 +47,7 @@
 #'
 #' A subset of tree-level data from the 4th Spanish National Forest
 #' Inventory (IFN4), used to demonstrate the functions for calculating
-#' forest stand attributes.
+#' forest stand attributes and species dominance.
 #'
 #' The dataset contains all tree records from a selection of inventory
 #' plots in Catalonia.

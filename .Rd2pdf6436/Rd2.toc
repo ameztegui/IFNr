@@ -1,2 +1,0 @@
-\contentsline {subsection}{get\_BA}{1}{page.1}
-\contentsline {subsection}{hello}{2}{page.2}

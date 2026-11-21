@@ -48,14 +48,14 @@ is also calculated.
 }
 \examples{
 # Calculate basal area per plot
-get_BA(IFN = "IFN4", df = inventory)
+get_BA(IFN = "IFN4", df = IFN4_example)
 
 # Calculate basal area by species
-get_BA(IFN = "IFN4", df = inventory,
+get_BA(IFN = "IFN4", df = IFN4_example,
        per_species = TRUE)
 
 # Calculate basal area by species and diameter class
-get_BA(IFN = "IFN4", df = inventory,
+get_BA(IFN = "IFN4", df = IFN4_example,
        per_species = TRUE, per_CD = TRUE)
 
 }

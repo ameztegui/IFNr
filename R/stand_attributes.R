@@ -1,24 +1,70 @@
 
-# load("./data/IFN3_Spain.Rdata")
-# load("./data/IFN3_Exs_Spain.Rdata")
-#
-# load("./data/IFN4_Spain.Rdata")
-# load("./data/IFN4_Exs_Spain.Rdata")
+#' Prepare and group forest inventory data
+#'
+#' Internal function used by [get_BA()], [get_N()], [get_diam()]
+#' and [get_hei()] to filter and group tree-level forest inventory
+#' data before calculating stand attributes.
+#'
+#' @param IFN Character string indicating the National Forest Inventory
+#'   version. Either `"IFN3"` or `"IFN4"`.
+#' @param df Data frame containing tree-level forest inventory data.
+#' @param province Optional character vector specifying the provinces
+#'   to include.
+#' @param com_aut Optional character vector specifying the autonomous
+#'   communities to include.
+#' @param species Optional character vector specifying the tree species
+#'   to include, using species names (`Sps_name`).
+#' @param per_CD Logical. If `TRUE`, data are additionally grouped by
+#'   diameter class.
+#' @param per_species Logical. If `TRUE`, data are additionally grouped
+#'   by species.
+#'
+#' @return A grouped data frame (tibble) containing the filtered
+#'   inventory records. The grouping structure depends on the values
+#'   of `per_CD` and `per_species`.
+#'
+#' @details
+#' The function performs the following operations:
+#'
+#' \enumerate{
+#'   \item Filters invalid or unidentified tree records according to
+#'   the selected inventory version. For IFN3, records with missing
+#'   species codes and specified invalid `OrdenIf3` values are excluded.
+#'   For IFN4, records with missing species codes and specified invalid
+#'   `OrdenIf4` values are excluded.
+#'   \item Calculates diameter classes (`CD`) using 5 cm intervals,
+#'   starting at 7.5 cm, with class labels from 10 to 70 cm.
+#'   \item Calculates basal area per hectare (`BA`) from tree diameter
+#'   and density:
+#'   \deqn{BA = \frac{\pi D^2 N}{4}}
+#'   where diameter is expressed in metres and density in trees per hectare.
+#'   \item Applies optional filters by autonomous community, province
+#'   and species.
+#'   \item Groups the resulting data according to the selected options.
+#' }
+#'
+#' The grouping variables are:
+#' \itemize{
+#'   \item Always: province, autonomous community, plot information
+#'   and plot code.
+#'   \item Additionally, species identifiers and names when
+#'   `per_species = TRUE`.
+#'   \item Additionally, diameter class when `per_CD = TRUE`.
+#' }
+#'
+#' This is an internal function and is not exported.
+#'
+#' @keywords internal
 
-# df = PCMayores_IFN4
-# IFN = "IFN4"
-
-library(dplyr)
 .get_groups <- function(IFN, df, province = NULL, com_aut = NULL, species = NULL,
                    per_CD = FALSE, per_species = FALSE) {
-    require(dplyr)
-    require(tidyr)
-    # require(ggplot2)
+
 
     if (IFN == "IFN4") {
       df <- df |>
         drop_na(Especie) |>
         filter(OrdenIf4 != "888",
+               OrdenIf4 != "444",
                OrdenIf4 != "999",
                OrdenIf4 != "000",
                OrdenIf4 != "555",
@@ -109,14 +155,14 @@ library(dplyr)
 #'
 #' @examples
 #' # Calculate basal area per plot
-#' get_BA(IFN = "IFN4", df = inventory)
+#' get_BA(IFN = "IFN4", df = IFN4_example)
 #'
 #' # Calculate basal area by species
-#' get_BA(IFN = "IFN4", df = inventory,
+#' get_BA(IFN = "IFN4", df = IFN4_example,
 #'        per_species = TRUE)
 #'
 #' # Calculate basal area by species and diameter class
-#' get_BA(IFN = "IFN4", df = inventory,
+#' get_BA(IFN = "IFN4", df = IFN4_example,
 #'        per_species = TRUE, per_CD = TRUE)
 #'
 #' @export
@@ -148,14 +194,14 @@ get_BA <- function(IFN, df, province = NULL, com_aut = NULL, species = NULL,
 #'
 #' @examples
 #' # Calculate total tree density per plot
-#' get_N(IFN = "IFN3", df = inventory)
+#' get_N(IFN = "IFN3", df = IFN4_example)
 #'
 #' # Calculate tree density by species
-#' get_N(IFN = "IFN3", df = inventory,
+#' get_N(IFN = "IFN3", df = IFN4_example,
 #'       per_species = TRUE)
 #'
 #' # Calculate tree density by diameter class
-#' get_N(IFN = "IFN4", df = inventory,
+#' get_N(IFN = "IFN4", df = IFN4_example,
 #'       per_CD = TRUE)
 #'
 #' @export
@@ -185,10 +231,10 @@ get_N <- function(IFN, df, province = NULL, com_aut = NULL, species = NULL,
 #'
 #' @examples
 #' # Calculate mean diameter per plot
-#' get_diam(IFN = "IFN3", df = inventory)
+#' get_diam(IFN = "IFN3", df = IFN4_example)
 #'
 #' # Calculate mean diameter by species
-#' get_diam(IFN = "IFN4", df = inventory,
+#' get_diam(IFN = "IFN4", df = IFN4_example,
 #'          per_species = TRUE)
 #'
 #' @export
@@ -215,10 +261,10 @@ get_diam <- function(IFN, df, province = NULL, com_aut = NULL, species = NULL,
 #'
 #' @examples
 #' # Calculate mean height per plot
-#' get_hei(IFN = "IFN3", df = inventory)
+#' get_hei(IFN = "IFN3", df = IFN3_example)
 #'
 #' # Calculate mean height by species
-#' get_hei(IFN = "IFN4", df = inventory,
+#' get_hei(IFN = "IFN4", df = IFN4_example,
 #'         per_species = TRUE)
 #'
 #' @export
