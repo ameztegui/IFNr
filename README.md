@@ -175,13 +175,13 @@ For example, calculate biomass fractions using the INIA equations:
 
 ``` r
 calculate_allom(
-    df = inventory,
-    variable = "BAT",
-    equation = "INIA",
-    sps = Sps_name,
-    dbh = "Dn",
-    frac = TRUE
-    )
+  df = inventory,
+  variable = "BAT",
+  equation = "INIA",
+  sps = Sps_name,
+  dbh = "Dn",
+  frac = TRUE
+)
 ```
 
 See `?calculate_allom` for details on the available equation systems,
@@ -191,9 +191,24 @@ input requirements and returned variables.
 
 If you use **IFNr** in your research, please cite the package with:
 
-``` r
-citation("IFNr")
-```
+    ## Warning in citation("IFNr", auto = TRUE): could not determine year for 'IFNr' from package DESCRIPTION file
+
+To cite package ‘IFNr’ in publications use:
+
+Ameztegui A, de Lleida U (????). *IFNr: A package to process data from
+forest inventories*. R package version 0.5.0,
+<https://github.com/ameztegui/IFNr>.
+
+A BibTeX entry for LaTeX users is
+
+@Manual{, title = {IFNr: A package to process data from forest
+inventories}, author = {Aitor Ameztegui and Universitat {de Lleida}},
+note = {R package version 0.5.0}, url =
+{<https://github.com/ameztegui/IFNr>}, }
+
+ATTENTION: This citation information has been auto-generated from the
+package DESCRIPTION file and may need manual editing, see
+‘help(“citation”)’.
 
 ## License
 

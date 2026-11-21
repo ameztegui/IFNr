@@ -173,8 +173,8 @@ See `?calculate_allom` for details on the available equation systems, input requ
 
 If you use **IFNr** in your research, please cite the package with:
 
-```r
-citation("IFNr")
+```{r citation, echo=FALSE, results='asis'}
+cat(format(citation("IFNr", auto = TRUE)))
 ```
 
 ## License
