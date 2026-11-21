@@ -176,14 +176,15 @@ If you use **IFNr** in your research, please cite the package as follows:
 ```{r citation, echo=FALSE, results='asis'}
 desc <- utils::packageDescription("IFNr")
 
-cat(
-  paste0(
-    desc$Author, " (", format(Sys.Date(), "%Y"),
-    "). ", desc$Title,
-    ". R package version ", desc$Version,
-    ". https://github.com/ameztegui/IFNr"
-  )
-)
+author <- "Ameztegui, A"
+year <- format(Sys.Date(), "%Y")
+title <- desc$Title
+version <- desc$Version
+
+cat(sprintf(
+  "%s (%s). IFNr: %s. R package version %s. [https://github.com/ameztegui/IFNr](https://github.com/ameztegui/IFNr)",
+  author, year, title, version
+))
 ```
 
 ## License

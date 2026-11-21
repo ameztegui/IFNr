@@ -192,8 +192,8 @@ input requirements and returned variables.
 If you use **IFNr** in your research, please cite the package as
 follows:
 
-Aitor Ameztegui, Universitat de Lleida (2026). A package to process data
-from forest inventories. R package version 0.5.0.
+Ameztegui, A (2026). IFNr: A package to process data from forest
+inventories. R package version 0.5.0.
 <https://github.com/ameztegui/IFNr>
 
 ## License
