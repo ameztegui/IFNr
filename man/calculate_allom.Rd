@@ -15,7 +15,7 @@ calculate_allom(
 )
 }
 \arguments{
-\item{df}{The dataframe that contains the data}
+\item{df}{The dataframe that contains the inventory data}
 
 \item{variable}{The dependent variable that we want to calculate. "BAT" stands for aerial biomass, and "VOB" for volume over bark}
 

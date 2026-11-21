@@ -13,7 +13,7 @@ library(dplyr)
                    per_CD = FALSE, per_species = FALSE) {
     require(dplyr)
     require(tidyr)
-    require(ggplot2)
+    # require(ggplot2)
 
     if (IFN == "IFN4") {
       df <- df |>
@@ -82,21 +82,44 @@ library(dplyr)
 }
 
 
-
-#' Calculates dasometric summaries for IFN plots
+#' Calculate basal area in forest inventory plots
 #'
-#' @param df data frame
-#' @param province vector of characters containing the name of the provinces to be included in the analyses
-#' @param com_aut vector of characters containing the name of the autonomous regions (Comunidad Autónoma) to be included in the analyses
-#' @param species vector of characters containing the name of the tree species to be included in the analyses
-#' @param per_CD optional. When `per_CD = TRUE`, the desired variable is summarized per plot and diameter class
-#' @param per_species optional. When `per_species = TRUE`, the desired variable is summarized per plot and species
+#' Calculates the total basal area (BA, m2/ha) for each inventory plot,
+#' optionally disaggregated by species and/or diameter class.
+#' The relative contribution of each group to the total plot basal area
+#' is also calculated.
 #'
-#' @return A data frame containing the level of aggregation specified (per plot, per plot & species, per plot and DC, per plot, species and DC), and the amount of the outùt variable specified
+#' @param IFN Character. Forest National Inventory version. Must be
+#'   either "IFN3" or "IFN4".
+#' @param df Data frame containing tree-level inventory data.
+#' @param province Optional character vector with the names of the
+#'   provinces to include.
+#' @param com_aut Optional character vector with the names of the
+#'   autonomous communities to include.
+#' @param species Optional character vector with the species names
+#'   to include.
+#' @param per_CD Logical. If TRUE, results are calculated separately
+#'   for each diameter class.
+#' @param per_species Logical. If TRUE, results are calculated
+#'   separately for each species.
+#'
+#' @return A data frame containing basal area (BA, m2/ha) and its
+#'   relative contribution (prop_BA, %), at the selected aggregation
+#'   level.
+#'
+#' @examples
+#' # Calculate basal area per plot
+#' get_BA(IFN = "IFN4", df = inventory)
+#'
+#' # Calculate basal area by species
+#' get_BA(IFN = "IFN4", df = inventory,
+#'        per_species = TRUE)
+#'
+#' # Calculate basal area by species and diameter class
+#' get_BA(IFN = "IFN4", df = inventory,
+#'        per_species = TRUE, per_CD = TRUE)
+#'
 #' @export
-#'
-#'
-
 
 
 get_BA <- function(IFN, df, province = NULL, com_aut = NULL, species = NULL,
@@ -109,6 +132,35 @@ get_BA <- function(IFN, df, province = NULL, com_aut = NULL, species = NULL,
 
 }
 
+
+#' Calculate tree density in forest inventory plots
+#'
+#' Calculates tree density (N, trees/ha) for each inventory plot,
+#' optionally disaggregated by species and/or diameter class.
+#' The relative contribution of each group to total tree density
+#' is also calculated.
+#'
+#' @inheritParams get_BA
+#'
+#' @return A data frame containing tree density (N, trees/ha) and
+#'   its relative contribution (prop_N, %), at the selected
+#'   aggregation level.
+#'
+#' @examples
+#' # Calculate total tree density per plot
+#' get_N(IFN = "IFN3", df = inventory)
+#'
+#' # Calculate tree density by species
+#' get_N(IFN = "IFN3", df = inventory,
+#'       per_species = TRUE)
+#'
+#' # Calculate tree density by diameter class
+#' get_N(IFN = "IFN4", df = inventory,
+#'       per_CD = TRUE)
+#'
+#' @export
+
+
 get_N <- function(IFN, df, province = NULL, com_aut = NULL, species = NULL,
                   per_CD = FALSE, per_species = FALSE) {
 
@@ -119,6 +171,28 @@ get_N <- function(IFN, df, province = NULL, com_aut = NULL, species = NULL,
 
 }
 
+#' Calculate mean diameter in forest inventory plots
+#'
+#' Calculates the mean diameter (cm) for each inventory plot,
+#' optionally disaggregated by species and/or diameter class.
+#' Mean diameter is calculated as the arithmetic mean weighted
+#' by tree density (N).
+#'
+#' @inheritParams get_BA
+#'
+#' @return A data frame containing the weighted mean diameter
+#'   (Diam, cm) at the selected aggregation level.
+#'
+#' @examples
+#' # Calculate mean diameter per plot
+#' get_diam(IFN = "IFN3", df = inventory)
+#'
+#' # Calculate mean diameter by species
+#' get_diam(IFN = "IFN4", df = inventory,
+#'          per_species = TRUE)
+#'
+#' @export
+
 get_diam <- function(IFN, df, province = NULL, com_aut = NULL, species = NULL,
                      per_CD = FALSE, per_species = FALSE) {
 
@@ -127,6 +201,28 @@ get_diam <- function(IFN, df, province = NULL, com_aut = NULL, species = NULL,
 
 }
 
+#' Calculate mean tree height in forest inventory plots
+#'
+#' Calculates the mean tree height (m) for each inventory plot,
+#' optionally disaggregated by species and/or diameter class.
+#' Mean height is calculated as the arithmetic mean weighted
+#' by tree density (N).
+#'
+#' @inheritParams get_BA
+#'
+#' @return A data frame containing the weighted mean height
+#'   (Height, m) at the selected aggregation level.
+#'
+#' @examples
+#' # Calculate mean height per plot
+#' get_hei(IFN = "IFN3", df = inventory)
+#'
+#' # Calculate mean height by species
+#' get_hei(IFN = "IFN4", df = inventory,
+#'         per_species = TRUE)
+#'
+#' @export
+
 get_hei <- function(IFN, df, province = NULL, com_aut = NULL, species = NULL,
                     per_CD = FALSE, per_species = FALSE) {
 
@@ -134,27 +230,3 @@ get_hei <- function(IFN, df, province = NULL, com_aut = NULL, species = NULL,
         summarise(Height = weighted.mean(Ht,N, na.rm = T))
 
 }
-
-#' @examples
-#'
-#' #'
-#'
-#' foo <- get_BA(IFN = "IFN3", df = PCMayores_IFN3, per_species = F )
-#' foo2 <- get_BA(IFN = "IFN3", Mayores_exs_IFN3, per_species = F)
-#'
-#' foo3 <- foo |> left_join(foo2,
-#'                          by =c("Provincia", "Prov_Name",
-#'                                "CCAA", "Estadillo", "Codigo",
-#'                                "Clase", "Subclase", "Tipo_Parc")) |>
-#'   mutate(dif = BA.x - BA.y)
-#'
-#' plot(foo3$BA.x, foo3$BA.y)
-#' abline(0,1)
-
-#
-# get_diam(PCMayores_IFN4, com_aut = "Euskadi", per_species = TRUE)
-#
-#
-# get_BA(PCMayores_IFN4, species = "Pinus sylvestris")
-#
-# get_N(PCMayores_IFN4, com_aut = "Cataluñña", per_species = FALSE)

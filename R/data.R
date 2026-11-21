@@ -1,24 +1,64 @@
 #' Inventory data
 #'
-#' A subset of data from the 4th National Forest Inventory in Catalonia
+#' A subset of tree-level data used to demonstrate the
+#' application of allometric equations with [calculate_allom()].
 #'
-#'
-#' @format  data frame with data from 100 random inventory plots randomly
-#'  selected from the National Forest Inventory plots in Catalonia
-#' A data frame with 3,434 rows and 8 columns:
+#' @format A data frame with 2,157 rows and 8 columns:
 #' \describe{
-#'   \item{Codigo}{Code of the plot}
-#'   \item{nArbol}{tree order within the plot}
-#'   \item{Sps_name}{Tree pecies}
+#'   \item{Codigo}{Code of the inventory plot}
+#'   \item{nArbol}{Tree order within the plot}
+#'   \item{Sps_name}{Tree species name}
 #'   \item{Dn}{Tree diameter, in cm}
 #'   \item{Ht}{Tree height, in m}
-#'   \item{N}{Tree density (i.e. trees per hectare of that species and size)}
+#'   \item{N}{Tree density (trees per hectare)}
 #'   \item{Prov_Name}{Province in which the plot is located}
 #'   \item{CCAA}{Autonomous region in which the plot is located}
-#'   ...
 #' }
-#' @source <https://www.miteco.gob.es/es/biodiversidad/temas/inventarios-nacionales/inventario-forestal-nacional.html>
 #'
-#' @examples
-#' data(inventory)    # Lazy loading. Data becomes visible as soon as needed
+#' @source Spanish National Forest Inventory (IFN4), Catalonia.
+#' \url{https://www.miteco.gob.es/es/biodiversidad/temas/inventarios-nacionales/inventario-forestal-nacional.html}
+#'
+#' @keywords datasets
 "inventory"
+
+
+#' IFN3 example data
+#'
+#' A subset of tree-level data from the 3rd Spanish National Forest
+#' Inventory (IFN3), used to demonstrate the functions for calculating
+#' forest stand attributes.
+#'
+#' The dataset contains all tree records from a selection of inventory
+#' plots in Catalonia.
+#'
+#' @format A data frame containing tree-level inventory data.
+#' It includes the variables required by the functions
+#' [get_BA()], [get_N()], [get_diam()] and [get_hei()].
+#'
+#' @source Spanish National Forest Inventory (IFN3), Ministry for
+#' Ecological Transition and Demographic Challenge (MITECO).
+#' \url{https://www.miteco.gob.es/es/biodiversidad/temas/inventarios-nacionales/inventario-forestal-nacional.html}
+#'
+#' @keywords datasets
+"IFN3_example"
+
+
+#' IFN4 example data
+#'
+#' A subset of tree-level data from the 4th Spanish National Forest
+#' Inventory (IFN4), used to demonstrate the functions for calculating
+#' forest stand attributes.
+#'
+#' The dataset contains all tree records from a selection of inventory
+#' plots in Catalonia.
+#'
+#' @format A data frame containing tree-level inventory data.
+#' It includes the variables required by the functions
+#' [get_BA()], [get_N()], [get_diam()] and [get_hei()].
+#'
+#' @source Spanish National Forest Inventory (IFN4), Ministry for
+#' Ecological Transition and Demographic Challenge (MITECO).
+#' \url{https://www.miteco.gob.es/es/biodiversidad/temas/inventarios-nacionales/inventario-forestal-nacional.html}
+#'
+#' @keywords datasets
+"IFN4_example"

@@ -2,6 +2,9 @@
 
 export(calculate_allom)
 export(get_BA)
+export(get_N)
+export(get_diam)
+export(get_hei)
 import(rlang)
 import(tidyr)
 importFrom(glue,glue)
