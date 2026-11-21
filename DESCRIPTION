@@ -1,7 +1,7 @@
 Package: IFNr
 Type: Package
 Title: A package to process data from forest inventories
-Version: 0.2.0
+Version: 0.4.0
 Author: Aitor Ameztegui, Universitat de Lleida
 Maintainer: Aitor Ameztegui <aitor.ameztegui@udl.cat>
 Description: A collection of functions to compute dasometric variables from forest
