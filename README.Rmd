@@ -159,6 +159,7 @@ For example, calculate biomass fractions using the INIA equations:
 ```r
 calculate_allom(
   df = inventory,
+  variable = "BAT",
   equation = "INIA",
   sps = Sps_name,
   dbh = "Dn",

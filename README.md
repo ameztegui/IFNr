@@ -175,12 +175,13 @@ For example, calculate biomass fractions using the INIA equations:
 
 ``` r
 calculate_allom(
-  df = inventory,
-  equation = "INIA",
-  sps = Sps_name,
-  dbh = "Dn",
-  frac = TRUE
-)
+    df = inventory,
+    variable = "BAT",
+    equation = "INIA",
+    sps = Sps_name,
+    dbh = "Dn",
+    frac = TRUE
+    )
 ```
 
 See `?calculate_allom` for details on the available equation systems,
