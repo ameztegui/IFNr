@@ -4,29 +4,59 @@ output:
     html_preview: false
 ---
 
-# IFNr <img src="man/figures/logo.png" align="right" height="150" />
+# IFNr <img src="man/figures/logo.png" align="right" height="150"/>
 
 <!-- badges: start -->
+
 <!-- badges: end -->
 
 ## Overview
 
-**IFNr** is an R package designed to process and analyse data from the Spanish National Forest Inventory (*Inventario Forestal Nacional*, IFN).
+An R package to process, analyse and visualize data from the Spanish National Forest Inventory (IFN).
 
-The package provides tools to calculate forest stand attributes, analyse the relative importance and dominance of tree species, and estimate tree biomass using allometric equations.
+**IFNr** provides a collection of functions to process forest inventory data and characterize forest stands through a range of dasometric, structural and ecological indicators. The package supports data from the Spanish National Forest Inventory (IFN3 and IFN4) and provides tools to analyse forest stand composition, density, dimensions, diversity and structural complexity.
 
-Main functionalities include:
+## Main functionalities
 
-- Calculation of forest stand attributes: basal area, tree density, mean diameter and mean height.
-- Assessment of species importance based on basal area or tree density.
-- Identification of dominant and main tree species at plot level.
-- Estimation of tree biomass using allometric equations.
+### Forest stand characterization
+
+Functions to calculate basic dasometric variables and characterize stand density and dimensions:
+
+-   Tree density (N).
+
+-   Basal area (BA).
+
+-   Mean diameter.
+
+-   Quadratic mean diameter (QMD).
+
+-   Dominant diameter according to Assmann.
+
+-   Stand Density Index (SDI) according to Reineke.
+
+### Forest diversity and structural complexity
+
+Functions to characterize taxonomic diversity and forest stand structure:
+
+-   Species richness.
+
+-   Shannon diversity index.
+
+-   Simpson diversity index.
+
+-   Pielou's evenness index.
+
+-   Vertical structural diversity index (Pretzsch).
+
+-   Gini coefficient to quantify inequality in tree diameter or individual basal area.
+
+The functions allow users to calculate stand-level indicators and, where appropriate, obtain results by species or other inventory groupings.
 
 ## Installation
 
 Install the development version of **IFNr** from GitHub:
 
-```r
+``` r
 # install.packages("devtools")
 devtools::install_github("ameztegui/IFNr")
 ```
@@ -36,14 +66,14 @@ devtools::install_github("ameztegui/IFNr")
 The package includes three example datasets:
 
 | Dataset | Description | Main use |
-|---|---|---|
+|------------------------|------------------------|------------------------|
 | `IFN3_example` | Example data from the third Spanish National Forest Inventory (IFN3). | Stand attributes and species importance |
 | `IFN4_example` | Example data from the fourth Spanish National Forest Inventory (IFN4). | Stand attributes and species importance |
 | `inventory` | Tree-level inventory data derived from IFN4. | Allometric biomass calculations |
 
 Load the package and datasets with:
 
-```r
+``` r
 library(IFNr)
 
 data("IFN3_example")
@@ -55,10 +85,10 @@ data("inventory")
 
 IFNr includes four functions to calculate basic forest stand attributes:
 
-- `get_BA()`: basal area.
-- `get_N()`: tree density.
-- `get_diam()`: mean diameter at breast height, weighted by tree density.
-- `get_hei()`: mean tree height, weighted by tree density.
+-   `get_BA()`: basal area.
+-   `get_N()`: tree density.
+-   `get_diam()`: mean diameter at breast height, weighted by tree density.
+-   `get_hei()`: mean tree height, weighted by tree density.
 
 Calculations can be performed at plot level, by diameter class, by species, or by combining both grouping criteria. Geographic filters can also be applied using province or autonomous community.
 
@@ -66,7 +96,7 @@ Calculations can be performed at plot level, by diameter class, by species, or b
 
 Calculate basal area per plot:
 
-```r
+``` r
 get_BA(
   IFN = "IFN4",
   df = IFN4_example
@@ -75,7 +105,7 @@ get_BA(
 
 Calculate tree density by species:
 
-```r
+``` r
 get_N(
   IFN = "IFN4",
   df = IFN4_example,
@@ -85,7 +115,7 @@ get_N(
 
 Calculate mean diameter by diameter class:
 
-```r
+``` r
 get_diam(
   IFN = "IFN3",
   df = IFN3_example,
@@ -95,7 +125,7 @@ get_diam(
 
 Calculate mean tree height by species:
 
-```r
+``` r
 get_hei(
   IFN = "IFN3",
   df = IFN3_example,
@@ -113,7 +143,7 @@ Identifies plots where a given species reaches or exceeds a specified percentage
 
 For example, identify plots where *Pinus sylvestris* accounts for at least 50% of basal area:
 
-```r
+``` r
 get_dominant_sps(
   df = IFN4_example,
   species = "Pinus sylvestris",
@@ -130,7 +160,7 @@ You can specify the number of species to retain (`n_species`), a minimum importa
 
 For example, retain the three most important species based on basal area:
 
-```r
+``` r
 get_main_sps(
   df = IFN4_example,
   criterion = "BA",
@@ -140,7 +170,7 @@ get_main_sps(
 
 Alternatively, retain species accounting for at least 10% of total basal area:
 
-```r
+``` r
 get_main_sps(
   df = IFN4_example,
   criterion = "BA",
@@ -156,7 +186,7 @@ The function uses tree diameter and, depending on the equation system, may also 
 
 For example, calculate biomass fractions using the INIA equations:
 
-```r
+``` r
 calculate_allom(
   df = inventory,
   variable = "BAT",

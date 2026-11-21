@@ -47,7 +47,7 @@ by tree density (N).
 }
 \examples{
 # Calculate mean diameter per plot
-get_diam(IFN = "IFN3", df = IFN4_example)
+get_diam(IFN = "IFN3", df = IFN3_example)
 
 # Calculate mean diameter by species
 get_diam(IFN = "IFN4", df = IFN4_example,

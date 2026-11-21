@@ -1,5 +1,5 @@
 
-# IFNr <img src="man/figures/logo.png" align="right" height="150" />
+# IFNr <img src="man/figures/logo.png" align="right" height="150"/>
 
 <!-- badges: start -->
 
@@ -7,20 +7,55 @@
 
 ## Overview
 
-**IFNr** is an R package designed to process and analyse data from the
-Spanish National Forest Inventory (*Inventario Forestal Nacional*, IFN).
+An R package to process, analyse and visualize data from the Spanish
+National Forest Inventory (IFN).
 
-The package provides tools to calculate forest stand attributes, analyse
-the relative importance and dominance of tree species, and estimate tree
-biomass using allometric equations.
+**IFNr** provides a collection of functions to process forest inventory
+data and characterize forest stands through a range of dasometric,
+structural and ecological indicators. The package supports data from the
+Spanish National Forest Inventory (IFN3 and IFN4) and provides tools to
+analyse forest stand composition, density, dimensions, diversity and
+structural complexity.
 
-Main functionalities include:
+## Main functionalities
 
-- Calculation of forest stand attributes: basal area, tree density, mean
-  diameter and mean height.
-- Assessment of species importance based on basal area or tree density.
-- Identification of dominant and main tree species at plot level.
-- Estimation of tree biomass using allometric equations.
+### Forest stand characterization
+
+Functions to calculate basic dasometric variables and characterize stand
+density and dimensions:
+
+- Tree density (N).
+
+- Basal area (BA).
+
+- Mean diameter.
+
+- Quadratic mean diameter (QMD).
+
+- Dominant diameter according to Assmann.
+
+- Stand Density Index (SDI) according to Reineke.
+
+### Forest diversity and structural complexity
+
+Functions to characterize taxonomic diversity and forest stand
+structure:
+
+- Species richness.
+
+- Shannon diversity index.
+
+- Simpson diversity index.
+
+- Pielou’s evenness index.
+
+- Vertical structural diversity index (Pretzsch).
+
+- Gini coefficient to quantify inequality in tree diameter or individual
+  basal area.
+
+The functions allow users to calculate stand-level indicators and, where
+appropriate, obtain results by species or other inventory groupings.
 
 ## Installation
 
