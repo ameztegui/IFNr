@@ -112,16 +112,28 @@ calculate_allom <- function (df, variable, equation = NULL, dbh = "dbh", height 
 
             ## Branches > 7 cm
             BR7_RUIZ = case_when(
-              Species %in% c("Alnus glutinosa", "Quercus canariensis", "Quercus faginea", "Quercus suber",
-                             "Abies alba", "Pinus pinaster","Pinus uncinata") ~
-                BR7_RUIZ_1_param_a*dbh ^ BR7_RUIZ_1_param_b * Height ^ BR7_RUIZ_1_param_c,
-              Species %nin% c("Alnus glutinosa", "Quercus canariensis", "Quercus faginea", "Quercus suber",
-                              "Abies alba", "Pinus pinaster","Pinus uncinata") & dbh <= BR7_RUIZ_1_param_b ~
+
+              ## Species with specific equation a * DBH^b * Ht^c
+              Species %in% c("Alnus glutinosa", "Quercus canariensis",
+                             "Quercus faginea", "Quercus suber",
+                             "Abies alba", "Pinus pinaster", "Pinus uncinata", "Olea europaea") ~
+                BR7_RUIZ_1_param_a * dbh ^ BR7_RUIZ_1_param_b * Height ^ BR7_RUIZ_1_param_c,
+
+              ## Species without branches > 7 cm
+              Species %nin% c("Alnus glutinosa", "Quercus canariensis",
+                              "Quercus faginea", "Quercus suber",
+                              "Abies alba", "Pinus pinaster", "Pinus uncinata",
+                              "Olea europaea") & dbh <= BR7_RUIZ_1_param_b ~
                 0,
-              Species %nin% c("Alnus glutinosa", "Quercus canariensis", "Quercus faginea", "Quercus suber",
-                              "Abies alba", "Pinus pinaster","Pinus uncinata") & dbh > BR7_RUIZ_1_param_b ~
+
+              ## Remaining species
+              Species %nin% c("Alnus glutinosa", "Quercus canariensis",
+                              "Quercus faginea", "Quercus suber",
+                              "Abies alba", "Pinus pinaster", "Pinus uncinata",
+                              "Olea europaea") & dbh > BR7_RUIZ_1_param_b ~
                 BR7_RUIZ_1_param_a * (dbh - BR7_RUIZ_1_param_b)^BR7_RUIZ_1_param_c +
-                BR7_RUIZ_1_param_d*(dbh - BR7_RUIZ_1_param_b)^2*Height),
+                BR7_RUIZ_1_param_d * (dbh - BR7_RUIZ_1_param_b)^2 * Height
+            ),
 
             ## Branches 2-7 cm
             BR2_7_RUIZ = case_when(
@@ -135,7 +147,7 @@ calculate_allom <- function (df, variable, equation = NULL, dbh = "dbh", height 
             ## Branches < 2 cm
             BR2_RUIZ = case_when(
               Species %in% c("Pinus pinea", "Pinus uncinata") ~
-                BR2_RUIZ_1_param_a + BR2_RUIZ_1_param_b * dbh ^ BR2_RUIZ_1_param_c - BR2_RUIZ_1_param_d * Height,
+                BR2_RUIZ_1_param_a + BR2_RUIZ_1_param_b * dbh ^ BR2_RUIZ_1_param_c + BR2_RUIZ_1_param_d * Height,
               Species == "Pinus halepensis" ~
                 BR2_RUIZ_1_param_a + BR2_RUIZ_1_param_b * dbh^2 * Height + BR2_RUIZ_1_param_c * dbh * Height,
               Species == "Eucalyptus globulus" ~
@@ -144,7 +156,7 @@ calculate_allom <- function (df, variable, equation = NULL, dbh = "dbh", height 
                              "Pinus sylvestris", "Fraxinus angustifolia") ~
                 BR2_RUIZ_1_param_a * dbh ^ BR2_RUIZ_1_param_b * BR2_RUIZ_1_param_c * Height ^BR2_RUIZ_1_param_d,
               TRUE ~
-                BR2_RUIZ_1_param_a * dbh ^ BR2_RUIZ_1_param_b + BR2_RUIZ_1_param_c * dbh ^BR2_RUIZ_1_param_d * Height)) |> |>
+                BR2_RUIZ_1_param_a * dbh ^ BR2_RUIZ_1_param_b + BR2_RUIZ_1_param_c * dbh ^BR2_RUIZ_1_param_d * Height)) |>
           rowwise() |>
           mutate(BAT = sum(BF_RUIZ, BR7_RUIZ, BR2_7_RUIZ, BR2_RUIZ, na.rm = T)) |>
           dplyr::select(-contains("param"))
